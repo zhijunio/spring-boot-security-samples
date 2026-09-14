@@ -24,4 +24,29 @@ public class AsyncController {
     public CompletableFuture<String> asyncUser() {
         return asyncUserService.currentUser();
     }
+
+    @GetMapping("/async-user/runnable")
+    public CompletableFuture<String> asyncUserRunnable() {
+        return asyncUserService.currentUserWithRunnable();
+    }
+
+    @GetMapping("/async-user/callable")
+    public CompletableFuture<String> asyncUserCallable() {
+        return asyncUserService.currentUserWithCallable();
+    }
+
+    @GetMapping("/async-user/executor-service")
+    public CompletableFuture<String> asyncUserExecutorService() {
+        return asyncUserService.currentUserWithExecutorService();
+    }
+
+    @GetMapping("/async-user/task-decorator")
+    public CompletableFuture<String> asyncUserTaskDecorator() {
+        return asyncUserService.currentUserWithTaskDecorator();
+    }
+
+    @GetMapping("/async-user/explicit-context")
+    public CompletableFuture<String> asyncUserExplicitContext() {
+        return asyncUserService.currentUserWithExplicitContext();
+    }
 }
