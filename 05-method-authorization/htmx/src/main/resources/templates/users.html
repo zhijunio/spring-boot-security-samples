@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="user">
+    <h2>User Page!</h2>
+    <div sec:authorize="isAuthenticated()">
+        <p>Username:
+            <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}></span>
+        </p>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <p>Username: Anonymous</p>
+    </div>
+    <p>Name: <span th:text="${user.name}"></span></p>
+    <p>E-mail: <span th:text="${user.email}"></span></p>
+    <p>
+        <span th:if="${user.roles.size()>1}">Roles: </span>
+        <span th:unless="${user.roles.size()>1}">Role: </span>
+        <span th:text="${user.roles}"></span>
+    </p>
+    <p><a href=''
+          hx-get="/main"
+          hx-swap="innerHTML"
+          hx-target="#main"
+          hx-trigger="click">
+        Home</a>
+    </p>
+</div>
+<div th:fragment="admin">
+    <h2>Admin Page!</h2>
+    <div sec:authorize="isAuthenticated()">
+        <p>Username:
+            <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}></span>
+        </p>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <p>Username: Anonymous</p>
+    </div>
+    <p>Name: <span th:text="${user.name}"></span></p>
+    <p>E-mail: <span th:text="${user.email}"></span></p>
+    <p>
+        <span th:if="${user.roles.size()>1}">Roles: </span>
+        <span th:unless="${user.roles.size()>1}">Role: </span>
+        <span th:text="${user.roles}"></span>
+    </p>
+    <p><a href=''
+          hx-get="/main"
+          hx-swap="innerHTML"
+          hx-target="#main"
+          hx-trigger="click">
+        Home</a>
+    </p>
+</div>
+</body>
+</html>

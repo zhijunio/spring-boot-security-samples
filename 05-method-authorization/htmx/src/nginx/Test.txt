@@ -1,0 +1,11 @@
+<h2>Home Page!</h2>
+		<p>Username: <span>Anonymous</span></p>
+		<a href='' 
+			hx-get="http://localhost:8080/public"
+			hx-trigger="click"
+			hx-target="#main"
+			hx-swap="innerHTML">Public</a>
+		<p><a href='http://localhost:8080/login' >Login</a></p>
+		<p><a href='http://localhost:8080/logout' >Logout</a></p>
+		<p><a href='http://localhost:8080/user' >User</a></p>
+		<p><a href='http://localhost:8080/admin' >Admin</a></p>

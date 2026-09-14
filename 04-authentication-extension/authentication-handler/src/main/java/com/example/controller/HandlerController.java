@@ -1,0 +1,23 @@
+package com.example.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HandlerController {
+
+    @GetMapping("/")
+    public String home() {
+        return "Authentication handler demo";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+        return "USER PAGE";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "ADMIN PAGE";
+    }
+}

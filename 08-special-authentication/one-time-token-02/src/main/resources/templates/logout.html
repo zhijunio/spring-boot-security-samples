@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <title>Please sign in</title>
+    <link href="/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="content">
+    <h1 class="center">Spring Boot Tutorial</h1>
+    <form class="logout-form" method="post" th:action="@{/logout}">
+        <h3>Are you sure you want to log out?</h3>
+        <button class="primary" type="submit">Log Out</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot Tutorials</title>
+</head>
+<body>
+<h1 style="text-align: center;">Spring Boot Tutorial</h1>
+<h2 style="text-align: center;">Home Page!</h2>
+<div sec:authorize="isAuthenticated()">
+    <p style="text-align: center;">Username:
+        <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}>Anonymous</span>
+    </p>
+</div>
+<div sec:authorize="isAnonymous()">
+    <p style="text-align: center;">Username: Anonymous</p>
+</div>
+<p style="text-align: center;"><a href='/public'>Public</a></p>
+<p>&nbsp;</p>
+<div sec:authorize="!isAuthenticated()">
+    <p style="text-align: center;"><a href='/login'>Login</a></p>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <form method="post" style="text-align: center;" th:action="@{/logout}">
+        <button style="background: none; border: none; color: #00e; text-decoration: underline; cursor: pointer;"
+                type="submit">Logout
+        </button>
+    </form>
+</div>
+<p>&nbsp;</p>
+<div sec:authorize="isAuthenticated()">
+    <div sec:authorize="hasRole('ROLE_USER')">
+        <p style="text-align: center;"><a href='/user'>Private for User</a></p>
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <p style="text-align: center;"><a href='/admin'>Private for Admin</a></p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link href="/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1 class="center">Spring Boot Tutorial</h1>
+    <form class="login-form" method="post" th:action="@{/login/ott}">
+        <h2>Please input the token</h2>
+        <p>
+            <label class="screenreader" for="token">Token</label>
+            <input autofocus="autofocus" id="token" name="token" placeholder="Token" required th:value="${token}"
+                   type="text"/>
+        </p>
+        <button class="primary" type="submit">Sign in</button>
+    </form>
+</div>
+</body>
+</html>

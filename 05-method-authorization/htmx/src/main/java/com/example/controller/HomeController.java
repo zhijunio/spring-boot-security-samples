@@ -1,0 +1,42 @@
+package com.example.controller;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.config.CustomUser;
+
+@Controller
+public class HomeController {
+
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
+
+    @GetMapping("/main")
+    public String main_page() {
+        return "main :: main";
+    }
+
+    @GetMapping("/public")
+    public String public_page() {
+        return "public :: public";
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String private_page_user(Model model, @AuthenticationPrincipal CustomUser user) {
+        model.addAttribute("user", user);
+        return "users :: user";
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String private_page_admin(Model model, @AuthenticationPrincipal CustomUser user) {
+        model.addAttribute("user", user);
+        return "users :: admin";
+    }
+}

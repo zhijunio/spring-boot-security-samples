@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:sec="https://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Password checker</title></head>
+<body>
+<h1>Password checker</h1>
+<div sec:authorize="isAuthenticated()">
+    Logged in user: <span sec:authentication="name"></span>
+    <form method="post" th:action="@{/logout}">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+<div th:if="${session.compromised_password != null}">
+    <h3>Your password is compromised or too weak. Please consider resetting it.</h3>
+</div>
+</body>
+</html>

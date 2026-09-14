@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Tutorials</title>
+</head>
+<body>
+	<h1 style="text-align: center;">Spring Boot Tutorial</h1>
+	<h2 style="text-align: center;">Private Page for Admin!</h2>
+	<p style="text-align: center;">Username: {{name}}</p>
+	{{#user}}
+		<p style="text-align: center;">Name: {{name}}</p>
+		<p style="text-align: center;">E-mail: {{email}}</p>
+		<p style="text-align: center;">
+			{{#isRoles}}
+				Roles:
+			{{/isRoles}}
+			{{^isRoles}}
+				Role:
+			{{/isRoles}}		
+		{{roles}}</p>
+	{{/user}}
+	<p style="text-align: center;"><a href='/'>Home</a></p>
+</body>
+</html>

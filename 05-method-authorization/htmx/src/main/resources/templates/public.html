@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="public">
+    <h2 style="text-align: center;">Public Page!</h2>
+    <div sec:authorize="isAuthenticated()">
+        <p>Username:
+            <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}></span>
+        </p>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <p>Username: Anonymous</p>
+    </div>
+    <p><a href=''
+          hx-get="/main"
+          hx-swap="innerHTML"
+          hx-target="#main"
+          hx-trigger="click">
+        Home</a>
+    </p>
+</div>
+</body>
+</html>
