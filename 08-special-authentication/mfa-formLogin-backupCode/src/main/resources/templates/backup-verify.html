@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Backup phrase verification</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <h1>Spring Boot Tutorial</h1>
+    <p>Enter the 12-word BIP-39 English mnemonic.</p>
+    <p class="error" th:if="${param.error}">The phrase is invalid.</p>
+    <form method="post" th:action="@{/backup/verify}">
+        <input name="username" th:value="${username}" type="hidden">
+        <label for="mnemonic">Recovery phrase</label>
+        <textarea autofocus cols="48" id="mnemonic" name="mnemonic" required rows="3"></textarea>
+        <p>
+            <button type="submit">Verify</button>
+        </p>
+    </form>
+</div>
+</body>
+</html>
