@@ -9,9 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-Handler-part42</artifactId>
+    <artifactId>authentication-handler</artifactId>
     <version>0.0.1</version>
     <description>Spring Security authentication and logout handlers</description>
+
     <properties>
         <java.version>25</java.version>
     </properties>

@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-CORS-part35</artifactId>
+    <artifactId>cors</artifactId>
     <version>0.0.1</version>
     <properties>
         <java.version>25</java.version>

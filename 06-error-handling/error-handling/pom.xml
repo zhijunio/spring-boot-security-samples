@@ -8,8 +8,9 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-Exception-part37</artifactId>
+    <artifactId>error-handling</artifactId>
     <version>0.0.1</version>
+
     <properties>
         <java.version>25</java.version>
     </properties>

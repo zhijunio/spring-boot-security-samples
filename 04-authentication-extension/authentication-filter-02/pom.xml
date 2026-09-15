@@ -9,25 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-Filters-part32</artifactId>
+    <artifactId>authentication-filter-02</artifactId>
     <version>0.0.1</version>
-    <name>Spring-Boot-Security-Filters-part32</name>
-    <description>Spring Boot Security filters and method security</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
-        <java.version>26</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>

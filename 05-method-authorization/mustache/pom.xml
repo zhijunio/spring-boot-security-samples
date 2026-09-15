@@ -9,23 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-Mustache-part14</artifactId>
+    <artifactId>mustache</artifactId>
     <version>0.0.1</version>
-    <name>Spring-Boot-Security-Mustache-part14</name>
-    <description>Spring Boot Security Mustache</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>25</java.version>
     </properties>

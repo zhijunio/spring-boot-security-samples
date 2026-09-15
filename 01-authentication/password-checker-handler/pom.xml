@@ -13,9 +13,11 @@
     <artifactId>password-checker-handler</artifactId>
     <version>0.0.1</version>
     <description>Spring Security compromised password checker success handler</description>
+
     <properties>
         <java.version>25</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>me.gosimple</groupId>

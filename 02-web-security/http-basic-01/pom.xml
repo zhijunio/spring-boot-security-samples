@@ -9,25 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-HTTPBasic-part25</artifactId>
+    <artifactId>http-basic-01</artifactId>
     <version>0.0.1</version>
-    <name>Spring-Boot-Security-HTTPBasic-part25</name>
-    <description>Spring Boot Security</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
-        <java.version>26</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>

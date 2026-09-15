@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-CSRF-part34</artifactId>
+    <artifactId>csrf</artifactId>
     <version>0.0.1</version>
     <properties>
         <java.version>25</java.version>

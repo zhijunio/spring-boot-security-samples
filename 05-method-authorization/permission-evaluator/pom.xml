@@ -8,9 +8,10 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-PermissionEvaluator-part44</artifactId>
+    <artifactId>permission-evaluator</artifactId>
     <version>0.0.1</version>
     <description>Spring Security custom PermissionEvaluator</description>
+
     <properties>
         <java.version>25</java.version>
     </properties>

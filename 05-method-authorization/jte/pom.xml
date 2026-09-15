@@ -9,23 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-JTE-part10</artifactId>
+    <artifactId>jte</artifactId>
     <version>0.0.1</version>
-    <name>Spring-Boot-Security-JTE-part10</name>
-    <description>Spring Boot Security JTE</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>25</java.version>
     </properties>

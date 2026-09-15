@@ -8,7 +8,7 @@
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-Secured-part43</artifactId>
+    <artifactId>secured</artifactId>
     <version>0.0.1</version>
     <description>Spring Security Secured method authorization</description>
     <properties>
