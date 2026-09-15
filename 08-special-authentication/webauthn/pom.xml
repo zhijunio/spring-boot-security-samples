@@ -9,26 +9,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Spring-Boot-Security-WebAuthn-part22</artifactId>
+    <artifactId>webauthn</artifactId>
     <version>0.0.1</version>
-    <name>Spring-Boot-Security-WebAuthn-part22</name>
-    <description>Spring Boot Security</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>25</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

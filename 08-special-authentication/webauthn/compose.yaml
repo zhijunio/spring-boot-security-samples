@@ -1,8 +1,5 @@
 services:
-
-  # MySql Database
   db:
-    container_name: MySQL
     image: mysql:latest
     restart: unless-stopped
     ports:
