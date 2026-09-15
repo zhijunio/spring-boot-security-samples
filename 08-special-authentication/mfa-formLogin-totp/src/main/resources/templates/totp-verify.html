@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>TOTP verification</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <h1>Spring Boot Tutorial</h1>
+    <p>Enter the 6-digit code from your authenticator app.</p>
+    <p class="error" th:if="${param.error}">The code is invalid.</p>
+    <p>Secret: <code th:text="${secret}">secret</code></p>
+    <p>URI: <code th:text="${otpAuthUri}">otpauth</code></p>
+    <form method="post" th:action="@{/totp/verify}">
+        <input name="username" th:value="${username}" type="hidden">
+        <label for="code">TOTP code</label>
+        <input autofocus id="code" name="code" pattern="[0-9]{6}" required type="text">
+        <button type="submit">Verify</button>
+    </form>
+</div>
+</body>
+</html>
