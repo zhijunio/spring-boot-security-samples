@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MFA settings</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <h1>MFA settings</h1>
+    <p>User: <span th:text="${username}">user</span></p>
+    <p th:if="${param.bound}">Binding saved.</p>
+    <p th:if="${param.unbound}">Provider removed.</p>
+    <p th:if="${param.error}" class="error">Binding failed.</p>
+
+    <div th:if="${pending != null}" style="margin: 1rem auto; max-width: 36rem;">
+        <h2 th:text="'Confirm ' + ${pending.providerId()}">Confirm</h2>
+        <p th:if="${pending.secret() != null and !pending.secret().isBlank()}">
+            Secret / phrase: <code th:text="${pending.secret()}">secret</code>
+        </p>
+        <p th:if="${pending.attributes().containsKey('otpAuthUri')}">
+            URI: <code th:text="${pending.attributes().get('otpAuthUri')}">otpauth</code>
+        </p>
+        <form method="post" th:action="@{/mfa/settings/bind/confirm}">
+            <label th:if="${pendingProvider.needsBindingConfirmation()}">
+                Confirmation
+                <input name="confirmation" required/>
+            </label>
+            <input th:if="${!pendingProvider.needsBindingConfirmation()}" type="hidden" name="confirmation" value=""/>
+            <button type="submit">Confirm binding</button>
+        </form>
+        <form method="post" th:action="@{/mfa/settings/bind/cancel}">
+            <button type="submit">Cancel</button>
+        </form>
+    </div>
+
+    <table style="margin: 1rem auto; text-align: left;">
+        <tr>
+            <th>Provider</th>
+            <th>Platform</th>
+            <th>Bound</th>
+            <th></th>
+        </tr>
+        <tr th:each="provider : ${providers}">
+            <td th:text="${provider.displayName()}">name</td>
+            <td th:text="${platform.get(provider.id())} ? 'enabled' : 'disabled'">enabled</td>
+            <td th:text="${bound.containsKey(provider.id())} ? 'yes' : 'no'">no</td>
+            <td>
+                <form th:if="${platform.get(provider.id()) and !bound.containsKey(provider.id()) and pending == null}"
+                      method="post" th:action="@{/mfa/settings/bind/start}" style="display:inline;">
+                    <input type="hidden" name="providerId" th:value="${provider.id()}"/>
+                    <button type="submit">Bind</button>
+                </form>
+                <form th:if="${bound.containsKey(provider.id())}"
+                      method="post" th:action="@{/mfa/settings/unbind}" style="display:inline;">
+                    <input type="hidden" name="providerId" th:value="${provider.id()}"/>
+                    <button type="submit">Unbind</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p><a href="/">Home</a></p>
+</div>
+</body>
+</html>

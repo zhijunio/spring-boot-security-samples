@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MFA challenge</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <h1>Second factor</h1>
+    <p>Signed in as <span th:text="${username}">user</span> (password only).</p>
+    <p class="error" th:if="${param.error}">Verification failed.</p>
+    <div th:if="${blocked}">
+        <p>All bound providers are disabled by the platform. Contact an administrator.</p>
+    </div>
+    <div th:if="${!blocked and #lists.isEmpty(providers)}">
+        <p>No second factor is required.</p>
+        <p><a href="/">Home</a></p>
+    </div>
+    <div th:each="provider : ${providers}" style="margin: 1.5rem auto; max-width: 32rem;">
+        <h2 th:text="${provider.displayName()}">Provider</h2>
+        <form th:if="${provider.needsPrepare()}" method="post" th:action="@{/mfa/challenge/prepare}">
+            <input type="hidden" name="providerId" th:value="${provider.id()}"/>
+            <button type="submit">Send code</button>
+        </form>
+        <form method="post" th:action="@{/mfa/challenge}">
+            <input type="hidden" name="providerId" th:value="${provider.id()}"/>
+            <label>
+                Credential
+                <input name="credential" required th:placeholder="${provider.credentialPlaceholder()}"/>
+            </label>
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

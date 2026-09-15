@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MFA platform</title>
+</head>
+<body>
+<div style="text-align: center;">
+    <h1>Platform MFA providers</h1>
+    <p th:if="${param.saved}">Saved.</p>
+    <table style="margin: 1rem auto; text-align: left;">
+        <tr>
+            <th>Provider</th>
+            <th>Enabled</th>
+            <th></th>
+        </tr>
+        <tr th:each="provider : ${providers}">
+            <td th:text="${provider.displayName()}">name</td>
+            <td th:text="${enabled.get(provider.id())}">true</td>
+            <td>
+                <form method="post" th:action="@{/mfa/platform}">
+                    <input type="hidden" name="providerId" th:value="${provider.id()}"/>
+                    <input type="hidden" name="enabled" th:value="${!enabled.get(provider.id())}"/>
+                    <button type="submit"
+                            th:text="${enabled.get(provider.id())} ? 'Disable' : 'Enable'">Toggle</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p><a href="/">Home</a></p>
+</div>
+</body>
+</html>
