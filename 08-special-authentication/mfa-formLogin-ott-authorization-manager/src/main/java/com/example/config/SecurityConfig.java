@@ -36,10 +36,8 @@ public class SecurityConfig {
                 .oneTimeTokenLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/public", "/ott/sent", "/login/ott").permitAll()
-                        .requestMatchers("/user/**").access(authorizationManagerFactory.authenticated())
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/admin/**").access(authorizationManagerFactory.authenticated())
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").access(authorizationManagerFactory.hasRole("USER"))
+                        .requestMatchers("/admin/**").access(authorizationManagerFactory.hasRole("ADMIN"))
                         .anyRequest().authenticated());
         return http.build();
     }
