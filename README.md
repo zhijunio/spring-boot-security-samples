@@ -20,6 +20,7 @@ Spring Boot Security 示例项目集合，用于演示 Spring Security 常见认
 - password-encoder-02
 - password-checker
 - password-checker-handler
+- lockout
 - user-details-service-01～05
 - userlocation
 - async
@@ -137,7 +138,7 @@ mvn -f 01-authentication/basic-login/pom.xml test \
   -Dmaven.compiler.release=25
 ```
 
-CI 会自动检查仓库中的各个 Maven 项目。
+CI 会自动检查仓库中的各个 Maven 项目。依赖 MySQL 的样例在测试时改用内存 H2，不需要本机或 CI 先起数据库。
 
 ## 学习建议
 
