@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MfaOttEmailApplication {
+public class MfaFormLoginOttApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MfaOttEmailApplication.class, args);
+        SpringApplication.run(MfaFormLoginOttApplication.class, args);
     }
 
 }
