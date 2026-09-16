@@ -26,7 +26,7 @@ export GOOGLE_CLIENT_SECRET=your-client-secret
 mvn -f ./08-special-authentication/mfa-formLogin-oauth2/pom.xml spring-boot:run
 ~~~
 
-未设置环境变量时使用占位 `id` / `secret`，仅够测试重定向 URL，不能完成真实登录。
+未设置环境变量时应用无法启动。单元测试在 `src/test/resources` 里提供占位客户端，不连接真实 Google。
 
 访问 `http://localhost:8080`，经 `/login` 用 Google 登录后打开 `/profile`。若当前令牌没有 Gmail 只读 scope，会再次跳转授权页。
 

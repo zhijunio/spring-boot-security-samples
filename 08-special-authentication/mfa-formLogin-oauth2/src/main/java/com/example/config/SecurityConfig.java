@@ -1,7 +1,6 @@
 package com.example.config;
 
-import java.util.Set;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -39,10 +38,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    ClientRegistrationRepository clients() {
+    ClientRegistrationRepository clients(
+            @Value("${GOOGLE_CLIENT_ID:}") String clientId,
+            @Value("${GOOGLE_CLIENT_SECRET:}") String clientSecret) {
+        if (clientId.isBlank() || clientSecret.isBlank()) {
+            throw new IllegalStateException(
+                    "Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET before starting this sample");
+        }
         ClientRegistration google = CommonOAuth2Provider.GOOGLE.getBuilder("google")
-                .clientId(System.getenv().getOrDefault("GOOGLE_CLIENT_ID", "id"))
-                .clientSecret(System.getenv().getOrDefault("GOOGLE_CLIENT_SECRET", "secret"))
+                .clientId(clientId)
+                .clientSecret(clientSecret)
                 .scope("openid", "profile", "email", SCOPE)
                 .build();
         return new InMemoryClientRegistrationRepository(google);
