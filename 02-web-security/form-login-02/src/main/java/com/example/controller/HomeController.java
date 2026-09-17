@@ -41,9 +41,4 @@ public class HomeController {
         model.addAttribute("loginError", error);
         return "login";
     }
-
-    @GetMapping("/logout")
-    public String logout() {
-        return "logout";
-    }
 }
