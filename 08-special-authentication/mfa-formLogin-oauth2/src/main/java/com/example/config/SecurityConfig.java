@@ -23,17 +23,13 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationEntryPoint oauth2) throws Exception {
         http
                 .oauth2Login(Customizer.withDefaults())
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("JSESSIONID")
-                        .permitAll())
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
                 .exceptionHandling(exceptions -> exceptions
                         .defaultDeniedHandlerForMissingAuthority(oauth2, "SCOPE_" + SCOPE))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/public").permitAll()
+                        .requestMatchers("/", "/styles.css").permitAll()
                         .requestMatchers("/profile").hasAuthority("SCOPE_" + SCOPE)
-                        .anyRequest().authenticated()
-                );
+                        .anyRequest().authenticated());
         return http.build();
     }
 

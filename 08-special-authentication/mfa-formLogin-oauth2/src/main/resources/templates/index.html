@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Spring Boot Tutorials</title>
+    <title>Home - OAuth2 Scope MFA</title>
 </head>
 <body>
-<h1 style="text-align: center;">Spring Boot Tutorial</h1>
-<h2 style="text-align: center;">Home Page!</h2>
-<div sec:authorize="isAuthenticated()">
-    <p style="text-align: center;">Username:
-        <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}>Anonymous</span>
-    </p>
-</div>
-<div sec:authorize="isAnonymous()">
-    <p style="text-align: center;">Username: Anonymous</p>
-</div>
-<p style="text-align: center;"><a href='/public'>Public</a></p>
-<p>&nbsp;</p>
-<div sec:authorize="!isAuthenticated()">
-    <p style="text-align: center;"><a href='/login'>Login</a></p>
-</div>
-<div sec:authorize="isAuthenticated()">
-    <p style="text-align: center;"><a href='/profile'>Profile</a></p>
-    <p style="text-align: center;"><a href='/logout'>Logout</a></p>
-</div>
+<main>
+    <div class="card" sec:authorize="!isAuthenticated()">
+        <h2>OAuth2 step-up</h2>
+        <p class="subtitle">Sign in with Google, then open Profile to request the extra Gmail read-only scope.</p>
+        <a class="btn btn-primary" th:href="@{/oauth2/authorization/google}">Continue with Google</a>
+    </div>
+    <div class="card" sec:authorize="isAuthenticated()">
+        <h2>Account</h2>
+        <p class="subtitle">Signed in as <strong sec:authentication="name">user</strong>.</p>
+        <p class="hint">Profile needs an extra OAuth2 scope. Opening it re-prompts Google if that scope is missing.</p>
+        <p class="text-center mt-2">
+            <a class="btn btn-secondary" th:href="@{/profile}">Open profile</a>
+        </p>
+    </div>
+</main>
 </body>
 </html>

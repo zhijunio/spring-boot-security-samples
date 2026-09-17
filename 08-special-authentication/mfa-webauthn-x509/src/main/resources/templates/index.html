@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Spring Boot Tutorials</title>
+    <title>Account - WebAuthn + X.509 MFA</title>
 </head>
 <body>
-<h1 style="text-align: center;">Spring Boot Tutorial</h1>
-<h2 style="text-align: center;">Home Page!</h2>
-<div sec:authorize="isAuthenticated()">
-    <p style="text-align: center;">Username:
-        <span sec:authentication="name" th:text=${#strings.toUpperCase(#authentication.name)}>Anonymous</span>
-    </p>
-</div>
-<div sec:authorize="isAnonymous()">
-    <p style="text-align: center;">Username: Anonymous</p>
-</div>
-<p style="text-align: center;"><a href='/public'>Public</a></p>
-<p>&nbsp;</p>
-<div sec:authorize="!isAuthenticated()">
-    <p style="text-align: center;"><a href='/login'>Login</a></p>
-</div>
-<div sec:authorize="isAuthenticated()">
-    <p style="text-align: center;"><a href='/webauthn/register'>Register Key</a></p>
-    <p style="text-align: center;"><a href='/logout'>Logout</a></p>
-</div>
-<p>&nbsp;</p>
-<div sec:authorize="isAuthenticated()">
-    <div sec:authorize="hasRole('ROLE_USER')">
-        <p style="text-align: center;"><a href='/user'>Private for User</a></p>
+<main>
+    <div class="card">
+        <h2>Account</h2>
+        <p class="subtitle">Signed in as <strong sec:authentication="name">user</strong>. Client certificate then Passkey.</p>
+        <p class="hint">Present <code>user.p12</code>, register a Passkey, then complete WebAuthn. Both factors are always required.</p>
+        <p class="text-center mt-2">
+            <a class="btn btn-secondary" th:href="@{/webauthn/register}">Manage Passkeys</a>
+        </p>
     </div>
-    <div sec:authorize="hasRole('ROLE_ADMIN')">
-        <p style="text-align: center;"><a href='/admin'>Private for Admin</a></p>
-    </div>
-</div>
+</main>
 </body>
 </html>

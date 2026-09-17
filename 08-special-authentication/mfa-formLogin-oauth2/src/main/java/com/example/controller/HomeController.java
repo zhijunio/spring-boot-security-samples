@@ -11,11 +11,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/public")
-    public String public_page() {
-        return "public";
-    }
-
     @GetMapping("/profile")
     public String profile() {
         return "profile";

@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authorization.EnableMultiF
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,34 +23,22 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form.loginPage("/login").permitAll())
                 .x509(Customizer.withDefaults())
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("JSESSIONID")
-                        .permitAll())
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/", "/public").permitAll()
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                );
+                .logout(logout -> logout.logoutSuccessUrl("/login?logout").permitAll())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/styles.css").permitAll()
+                        .anyRequest().authenticated());
         return http.build();
     }
 
     @Bean
     UserDetailsService users(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
+        return new InMemoryUserDetailsManager(User.builder()
                 .username("user")
                 .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+                .authorities("USER")
+                .build());
     }
 
     @Bean

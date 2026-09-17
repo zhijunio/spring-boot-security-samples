@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
+    <title>Profile - OAuth2 Scope MFA</title>
 </head>
 <body>
-<h1 style="text-align: center;">Spring Boot Tutorial</h1>
-<h2 style="text-align: center;">Profile</h2>
-<p style="text-align: center;">This page requires the extra Gmail read-only OAuth2 scope.</p>
-<p style="text-align: center;">Username:
-    <span sec:authentication="name" th:text=${#authentication.name}>Anonymous</span>
-</p>
-<p style="text-align: center;"><a href='/'>Home</a></p>
+<main>
+    <div class="card">
+        <h2>Profile</h2>
+        <p class="subtitle">This page requires the Gmail read-only OAuth2 scope.</p>
+        <p>Signed in as <strong sec:authentication="name">user</strong>.</p>
+        <p class="text-center mt-2">
+            <a class="text-link" th:href="@{/}">Back to home</a>
+        </p>
+    </div>
+</main>
 </body>
 </html>

@@ -22,7 +22,7 @@ class MfaFormLoginOauth2SecurityTests {
     private MockMvc mockMvc;
 
     @Test
-    void publicHomeIsAccessible() throws Exception {
+    void homeIsAccessible() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
     }

@@ -23,13 +23,20 @@ class MfaFormLoginX509SecurityTests {
     private MockMvc mockMvc;
 
     @Test
-    void publicHomeIsAccessible() throws Exception {
-        mockMvc.perform(get("/"))
+    void loginPageIsAccessible() throws Exception {
+        mockMvc.perform(get("/login"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void passwordOnlyCannotAccessUserPage() throws Exception {
+    void anonymousHomeRedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
+
+    @Test
+    void passwordOnlyCannotAccessHome() throws Exception {
         MvcResult login = mockMvc.perform(post("/login")
                         .param("username", "user")
                         .param("password", "password")
@@ -37,20 +44,20 @@ class MfaFormLoginX509SecurityTests {
                 .andExpect(status().is3xxRedirection())
                 .andReturn();
 
-        mockMvc.perform(get("/user")
+        mockMvc.perform(get("/")
                         .session((MockHttpSession) login.getRequest().getSession()))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void x509OnlyRedirectsToPasswordLogin() throws Exception {
-        mockMvc.perform(get("/user").with(x509("certs/user.crt")))
+        mockMvc.perform(get("/").with(x509("certs/user.crt")))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?factor.type=password&factor.reason=missing"));
     }
 
     @Test
-    void passwordAndX509AllowUserPage() throws Exception {
+    void passwordAndX509AllowHome() throws Exception {
         MvcResult login = mockMvc.perform(post("/login")
                         .param("username", "user")
                         .param("password", "password")
@@ -59,7 +66,7 @@ class MfaFormLoginX509SecurityTests {
                 .andExpect(status().is3xxRedirection())
                 .andReturn();
 
-        mockMvc.perform(get("/user")
+        mockMvc.perform(get("/")
                         .session((MockHttpSession) login.getRequest().getSession())
                         .with(x509("certs/user.crt")))
                 .andExpect(status().isOk());

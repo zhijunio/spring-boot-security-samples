@@ -1,0 +1,269 @@
+:root {
+    --spring-green: #6db33f;
+    --spring-green-dark: #5a9a32;
+    --header-bg: #1a202c;
+    --body-bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --border-color: #e2e8f0;
+    --error-bg: #fff5f5;
+    --error-text: #c53030;
+    --error-border: #fc8181;
+    --success-bg: #f0fff4;
+    --success-text: #276749;
+    --success-border: #68d391;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--body-bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: var(--header-bg);
+    padding: 0 1.5rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-header .logo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--spring-green);
+    text-decoration: none;
+}
+
+.app-header .header-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #cbd5e0;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.app-header .header-actions button:hover {
+    color: #ffffff;
+}
+
+.main-content {
+    padding: 2rem 0 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 1rem;
+}
+
+.card.wide {
+    max-width: 560px;
+}
+
+.card h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.card .subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    background: #fff;
+}
+
+.form-control:focus {
+    border-color: var(--spring-green);
+    box-shadow: 0 0 0 3px rgba(109, 179, 63, 0.15);
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: var(--spring-green);
+    color: #ffffff;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: var(--spring-green-dark);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--spring-green);
+    border: 1px solid var(--spring-green);
+    width: auto;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(109, 179, 63, 0.08);
+}
+
+.btn-danger {
+    background-color: #e53e3e;
+    color: #ffffff;
+    width: 100%;
+}
+
+.btn-danger:hover {
+    background-color: #c53030;
+}
+
+.alert {
+    padding: 0.7rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.alert-error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+.alert-success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 1.5rem 0 0.5rem;
+}
+
+.empty {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.settings-list {
+    list-style: none;
+    margin: 0;
+}
+
+.settings-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+}
+
+.settings-label {
+    font-weight: 600;
+}
+
+.settings-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.settings-action .btn {
+    width: auto;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+}
+
+.hint {
+    margin-top: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.text-link {
+    color: var(--spring-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+code {
+    font-size: 0.85em;
+}
+
+@media (max-width: 640px) {
+    .settings-list li {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
