@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}">OTT MFA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header class="app-header">
+    <a th:href="@{/}" class="logo">OTT MFA</a>
+    <div class="header-actions" sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Log out</button>
+        </form>
+    </div>
+</header>
+<div class="main-content centered" th:insert="${content}"></div>
+</body>
+</html>

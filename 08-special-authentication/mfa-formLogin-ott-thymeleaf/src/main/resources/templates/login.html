@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Log in - OTT MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <th:block th:if="${param['factor.type'] != null && param['factor.type'][0] == 'ott'}">
+            <h2>One-Time Token</h2>
+            <p class="subtitle">Password is done. Request a magic link, then open it from the log.</p>
+            <form th:action="@{/ott/generate}" method="post">
+                <div class="form-group">
+                    <label for="ott-username">Username</label>
+                    <input type="text" id="ott-username" name="username" class="form-control"
+                           th:value="${#authentication.name}" readonly required>
+                </div>
+                <button type="submit" class="btn btn-primary">Send token</button>
+            </form>
+        </th:block>
+        <th:block th:unless="${param['factor.type'] != null && param['factor.type'][0] == 'ott'}">
+            <h2>Log in</h2>
+            <p class="subtitle">Username and password first. A one-time token is next.</p>
+            <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+            <div th:if="${param.error}" class="alert alert-error">Invalid username or password.</div>
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control"
+                           autocomplete="username" autocapitalize="none" spellcheck="false"
+                           required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+            <p class="hint">Demo: <code>user</code> / <code>password</code></p>
+        </th:block>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Token sent - OTT MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Check the log</h2>
+        <p class="subtitle">This sample prints the magic link to the application log instead of sending email.</p>
+        <p class="text-center mt-2">
+            <a th:href="@{/login/ott}" class="text-link">Enter token</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>

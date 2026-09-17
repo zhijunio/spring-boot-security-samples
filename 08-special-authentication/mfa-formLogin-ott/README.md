@@ -1,27 +1,20 @@
 # mfa-formLogin-ott
 
-演示 Spring Security 官方多因素认证：密码因素 + One-Time Token 因素，Token 通过邮件（示例中打印到日志）投递。
+密码 + One-Time Token 的最小 MFA 示例。使用 Spring Security 默认登录页和令牌提交页；用户与令牌存在内存里，进程退出即清空。没有角色、没有数据库。
 
-## 测试
+自定义 Thymeleaf 页面 + JDBC 版本见同目录 `mfa-formLogin-ott-thymeleaf`。
 
-在仓库根目录执行：
+`oneTimeTokenLogin` 需要一个 `OneTimeTokenGenerationSuccessHandler`。本示例只把魔法链接打印到日志（模拟发信），再跳到默认提交页 `/login/ott`，不提供自定义页面。
 
-~~~bash
+## 运行
+
+```bash
 mvn -f ./08-special-authentication/mfa-formLogin-ott/pom.xml test
-~~~
-
-## 启动
-
-在仓库根目录执行：
-
-~~~bash
 mvn -f ./08-special-authentication/mfa-formLogin-ott/pom.xml spring-boot:run
-~~~
+```
 
-部分示例依赖 MySQL 或其他外部服务，启动前请先查看该项目的配置文件和 `compose.yaml`。
+访问 `http://localhost:8080`。演示账号 `user` / `password`。密码登录后请求一次性令牌，从日志里复制 Magic Link，在默认提交页完成第二因子。
 
-`@EnableMultiFactorAuthentication` 要求每个授权规则同时具备 `FactorGrantedAuthority.PASSWORD_AUTHORITY` 和 `FactorGrantedAuthority.OTT_AUTHORITY`。`formLogin` 与 `oneTimeTokenLogin` 使用官方默认配置；缺哪个因素，框架会自动跳转到对应登录页。
+## 关键配置
 
-令牌由内置 `JdbcOneTimeTokenService` 保存到 MySQL。生成成功后由 `MagicLinkOneTimeTokenGenerationSuccessHandler` 把登录链接打印到日志（模拟发信），再跳转到 `/ott/sent`。
-
-示例用户：`user` / `admin`，邮箱分别为 `user@example.com`、`admin@example.com`，密码均为 `password`。
+`@EnableMultiFactorAuthentication` 同时要求 `FACTOR_PASSWORD` 和 `FACTOR_OTT`。`formLogin` 与 `oneTimeTokenLogin` 使用官方默认页面。`/ott/generate` 和 `/login/ott` 只要求密码，以便在密码登录后申请并提交令牌。
