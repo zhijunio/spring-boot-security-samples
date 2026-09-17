@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="field(id)" class="form-group">
+    <label th:for="${id}">Email code</label>
+    <div class="otp-wrap">
+        <input type="text" th:id="${id}" name="code" class="form-control otp-input" inputmode="numeric"
+               autocomplete="one-time-code" pattern="[0-9]+" required>
+        <button type="submit" name="resend" value="1" class="otp-resend" formnovalidate data-otp-resend
+                th:disabled="${cooldown != null and cooldown > 0}"
+                th:data-cooldown="${cooldown != null ? cooldown : 0}"
+                th:text="${cooldown != null and cooldown > 0 ? cooldown + 's' : 'Resend'}"></button>
+    </div>
+</div>
+</body>
+</html>

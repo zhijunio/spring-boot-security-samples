@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, false)}">
+<head>
+    <title>Sign Up - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Sign Up</h2>
+        <p class="subtitle">Create a user to try multi-factor authentication.</p>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <form th:action="@{/signup}" method="post" autocomplete="on">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       autocomplete="username" autocapitalize="none" spellcheck="false" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control"
+                       autocomplete="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       autocomplete="new-password" minlength="8" required>
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirm">Confirm password</label>
+                <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control"
+                       autocomplete="new-password" minlength="8" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+        <p class="text-center mt-2 text-secondary">
+            Already have an account? <a th:href="@{/login}" class="text-link">Log in</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>

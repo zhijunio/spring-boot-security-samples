@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Enable Mnemonic - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Write down your mnemonic</h2>
+        <p class="subtitle">
+            These 12 BIP39 words are the only recovery for this factor.
+            Write them on paper and store them offline.
+        </p>
+        <p class="text-secondary mb-2">
+            Never share this phrase, take a screenshot, or save it in a password manager.
+            This screen is shown during setup only.
+        </p>
+
+        <ol class="mnemonic-words" id="mnemonic-words" aria-label="Recovery phrase">
+            <li th:each="word : ${words}" th:text="${word}"></li>
+        </ol>
+
+        <form id="reveal-form" th:action="@{/enable-mnemonic}" method="post">
+            <label class="mnemonic-ack" for="mnemonic-ack">
+                <input type="checkbox" id="mnemonic-ack" required>
+                I wrote these 12 words down and stored them offline.
+            </label>
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

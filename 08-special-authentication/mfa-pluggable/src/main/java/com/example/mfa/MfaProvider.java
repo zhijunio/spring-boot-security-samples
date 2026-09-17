@@ -1,47 +1,41 @@
 package com.example.mfa;
 
-/**
- * Pluggable second-factor provider. New methods = new Spring bean implementing this SPI.
- */
+import com.example.user.User;
+import org.springframework.security.core.Authentication;
+
 public interface MfaProvider {
 
-    String id();
+	String authority();
 
-    String displayName();
+	String method();
 
-    /**
-     * Optional side effect before the user submits a credential (e.g. send email code).
-     */
-    default void prepare(String username, String payload) {
-    }
+	String label();
 
-    default boolean needsPrepare() {
-        return false;
-    }
+	boolean enabled(User user);
 
-    default boolean needsBindingConfirmation() {
-        return false;
-    }
+	boolean verify(User user, String code);
 
-    default String credentialPlaceholder() {
-        return "code";
-    }
+	default boolean pending(Authentication authentication, User user) {
+		return enabled(user) && !MfaFactors.granted(authentication, authority());
+	}
 
-    /**
-     * Verify the submitted credential against the stored payload.
-     * @throws org.springframework.security.authentication.BadCredentialsException on failure
-     */
-    void verify(String username, String payload, String credential);
+	default boolean verified(Authentication authentication, User user) {
+		return enabled(user) && MfaFactors.granted(authentication, authority());
+	}
 
-    /**
-     * Start binding; return material the UI should show (secret, mnemonic, …).
-     */
-    BindingMaterial beginBinding(String username);
+	default void sendChallenge(User user) {
+	}
 
-    /**
-     * Persist the binding after optional confirmation (e.g. first TOTP code).
-     * @return payload stored for later {@link #verify}
-     */
-    String completeBinding(String username, BindingMaterial material, String confirmation);
+	default void sendChallengeIfAbsent(User user) {
+	}
+
+	default int cooldownRemaining(User user) {
+		return 0;
+	}
+
+	default boolean sendChallengeIfReady(User user) {
+		sendChallenge(user);
+		return true;
+	}
 
 }

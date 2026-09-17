@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Confirm Mnemonic - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Confirm your mnemonic</h2>
+        <p class="subtitle">Select the words in the same order you wrote them down.</p>
+        <div th:if="${message}" class="alert alert-error" th:text="${message}"></div>
+        <form id="confirm-form" th:action="@{/enable-mnemonic/confirm}" method="post" autocomplete="off">
+            <input type="hidden" id="code" name="code" value="" autocomplete="off">
+
+            <div class="mnemonic-section">
+                <div class="mnemonic-section-head">
+                    <span class="mnemonic-section-label" id="phrase-label">Your phrase</span>
+                    <span id="mnemonic-progress" class="mnemonic-progress">0 / 12</span>
+                </div>
+                <ol id="mnemonic-selected" class="mnemonic-slots mnemonic-selected" aria-labelledby="phrase-label">
+                    <li th:each="i : ${#numbers.sequence(0, 11)}" class="empty" th:data-slot="${i}"
+                        th:aria-label="${'Word ' + (i + 1) + ', empty'}">
+                        <span class="word"></span>
+                    </li>
+                </ol>
+                <div class="mnemonic-toolbar">
+                    <p class="text-secondary mnemonic-hint">Tap a filled slot to remove that word.</p>
+                    <button type="button" id="mnemonic-clear" class="text-link mnemonic-clear" hidden>Clear all</button>
+                </div>
+            </div>
+
+            <div class="mnemonic-section">
+                <div class="mnemonic-section-head">
+                    <span class="mnemonic-section-label" id="bank-label">Word bank</span>
+                </div>
+                <div id="mnemonic-bank" class="mnemonic-bank" role="group" aria-labelledby="bank-label">
+                    <button type="button" class="mnemonic-chip" th:each="word, iter : ${bank}"
+                            th:data-index="${iter.index}" th:data-word="${word}" th:text="${word}"
+                            aria-pressed="false"></button>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <button id="confirm" type="submit" class="btn btn-primary" disabled>Confirm</button>
+            </div>
+            <p class="text-center mt-2">
+                <a href="/enable-mnemonic" class="text-link">View phrase again</a>
+            </p>
+        </form>
+    </div>
+    <script th:src="@{/mnemonic-confirm.js}"></script>
+</main>
+</body>
+</html>

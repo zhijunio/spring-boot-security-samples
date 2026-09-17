@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Welcome - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Welcome</h2>
+        <p class="subtitle">Account details and the factors used after your password.</p>
+
+        <dl class="profile-list" th:if="${user}">
+            <div class="profile-row">
+                <dt>Username</dt>
+                <dd th:text="${user.username}"></dd>
+            </div>
+            <div class="profile-row">
+                <dt>Email</dt>
+                <dd th:text="${user.email}"></dd>
+            </div>
+        </dl>
+
+        <h3 class="section-title">Security</h3>
+        <ul class="settings-list" th:if="${user}">
+            <li>
+                <div class="settings-copy">
+                    <span class="settings-label">TOTP</span>
+                    <span class="settings-hint">Authenticator app codes</span>
+                </div>
+                <div class="totp-status settings-action">
+                    <span th:if="${user.totpMfaEnabled}" class="badge badge-enabled">Enabled</span>
+                    <th:block th:unless="${user.totpMfaEnabled}">
+                        <span class="badge badge-disabled">Disabled</span>
+                        <a href="/enable-mfa" class="btn btn-secondary">Enable</a>
+                    </th:block>
+                </div>
+            </li>
+            <li>
+                <div class="settings-copy">
+                    <span class="settings-label">Email code</span>
+                    <span class="settings-hint">One-time code sent to your email</span>
+                </div>
+                <div class="email-status settings-action">
+                    <span th:if="${user.emailMfaEnabled}" class="badge badge-enabled">Enabled</span>
+                    <th:block th:unless="${user.emailMfaEnabled}">
+                        <span class="badge badge-disabled">Disabled</span>
+                        <a href="/enable-email" class="btn btn-secondary">Enable</a>
+                    </th:block>
+                </div>
+            </li>
+            <li>
+                <div class="settings-copy">
+                    <span class="settings-label">Passkey</span>
+                    <span class="settings-hint">WebAuthn on this device</span>
+                </div>
+                <div class="webauthn-status settings-action">
+                    <span th:if="${webauthnEnabled}" class="badge badge-enabled">Enabled</span>
+                    <th:block th:unless="${webauthnEnabled}">
+                        <span class="badge badge-disabled">Disabled</span>
+                        <a href="/enable-webauthn" class="btn btn-secondary">Enable</a>
+                    </th:block>
+                </div>
+            </li>
+            <li>
+                <div class="settings-copy">
+                    <span class="settings-label">Mnemonic</span>
+                    <span class="settings-hint">12-word BIP39 recovery phrase</span>
+                </div>
+                <div class="mnemonic-status settings-action">
+                    <span th:if="${user.mnemonicMfaEnabled}" class="badge badge-enabled">Enabled</span>
+                    <th:block th:unless="${user.mnemonicMfaEnabled}">
+                        <span class="badge badge-disabled">Disabled</span>
+                        <a href="/enable-mnemonic" class="btn btn-secondary">Enable</a>
+                    </th:block>
+                </div>
+            </li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

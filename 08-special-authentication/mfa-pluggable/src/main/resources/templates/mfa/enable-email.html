@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Enable Email MFA - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Enable email code</h2>
+        <p class="subtitle">
+            Enter the 6-digit code for
+            <strong th:text="${email}"></strong>.
+            This demo writes the code to the application log instead of sending mail.
+        </p>
+        <div th:if="${notice}" class="alert alert-success" th:text="${notice}"></div>
+        <div th:if="${message}" class="alert alert-error" th:text="${message}"></div>
+        <form th:action="@{/enable-email}" method="post" autocomplete="off">
+            <div th:replace="~{mfa/email-code-field :: field('code')}"></div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+        <p class="text-center mt-2">
+            <a th:href="@{/}" class="text-link">Back</a>
+        </p>
+    </div>
+    <script th:src="@{/otp-resend.js}"></script>
+</main>
+</body>
+</html>

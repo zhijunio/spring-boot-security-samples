@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Multi-Factor Authentication - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Verify it's you</h2>
+        <p class="subtitle">Use any pending factor below. Primary methods all apply; mnemonic recovers the rest.</p>
+
+        <section class="challenge-factor" th:if="${methods.contains('totp')}">
+            <h3>Authenticator</h3>
+            <div th:if="${errorMethod == 'totp'}" class="alert alert-error" th:text="${message}"></div>
+            <form id="challenge-totp" th:action="@{/challenge}" method="post" autocomplete="off">
+                <input type="hidden" name="method" value="totp">
+                <div class="form-group">
+                    <label for="totpCode">Authentication code</label>
+                    <input type="text" id="totpCode" name="code" class="form-control otp-input" inputmode="numeric"
+                           autocomplete="one-time-code" pattern="[0-9]+" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+        </section>
+
+        <section class="challenge-factor" th:if="${methods.contains('email')}">
+            <h3>Email code</h3>
+            <p class="text-secondary mb-2">Sent to <span th:text="${email}"></span></p>
+            <div th:if="${errorMethod == 'email'}" class="alert alert-error" th:text="${message}"></div>
+            <form id="challenge-email" th:action="@{/challenge}" method="post" autocomplete="off">
+                <input type="hidden" name="method" value="email">
+                <div th:replace="~{mfa/email-code-field :: field('emailCode')}"></div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+        </section>
+
+        <section class="challenge-factor" th:if="${methods.contains('webauthn')}">
+            <h3>Passkey</h3>
+            <div th:if="${errorMethod == 'webauthn'}" class="alert alert-error" th:text="${message}"></div>
+            <button id="passkey-signin" type="button" class="btn btn-primary"
+                    th:attr="data-csrf-header=${csrfHeader},data-csrf-token=${csrfToken}">Use passkey</button>
+        </section>
+
+        <section class="challenge-factor challenge-recovery" th:if="${methods.contains('mnemonic')}">
+            <h3>Mnemonic</h3>
+            <p class="text-secondary mb-2">Recover instead of the other methods on this page.</p>
+            <div th:if="${errorMethod == 'mnemonic'}" class="alert alert-error" th:text="${message}"></div>
+            <form id="challenge-mnemonic" th:action="@{/challenge}" method="post" autocomplete="off">
+                <input type="hidden" name="method" value="mnemonic">
+                <div class="form-group">
+                    <label for="mnemonic">12-word phrase</label>
+                    <textarea id="mnemonic" name="code" class="form-control mnemonic-input" rows="3" required
+                              autocomplete="off" autocapitalize="none" spellcheck="false"
+                              placeholder="word1 word2 … word12"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+        </section>
+    </div>
+    <script th:if="${methods.contains('email')}" th:src="@{/otp-resend.js}"></script>
+    <script th:if="${methods.contains('webauthn')}" th:src="@{/challenge-webauthn.js}"></script>
+</main>
+</body>
+</html>

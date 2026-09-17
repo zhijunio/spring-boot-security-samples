@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Enable MFA - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Set up authenticator</h2>
+        <p class="subtitle">
+            Scan the QR code with an authenticator app, then enter the 6-digit code to finish.
+        </p>
+
+        <div class="qr-section">
+            <img th:src="${qrCode}" width="180" height="180" alt="Authenticator QR code">
+        </div>
+
+        <details class="setup-key" id="setup-key">
+            <summary class="text-link">Can't scan? Use the setup key</summary>
+            <p class="text-secondary mb-1">Enter this key in your authenticator app</p>
+            <code th:text="${secret}"></code>
+        </details>
+
+        <div th:if="${message}" class="alert alert-error" th:text="${message}"></div>
+
+        <form th:action="@{/enable-mfa}" method="post" autocomplete="off">
+            <div class="form-group">
+                <label for="code">Authentication code</label>
+                <input type="text" id="code" name="code" class="form-control otp-input" inputmode="numeric"
+                       autocomplete="one-time-code" pattern="[0-9]+" required autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+        <p class="text-center mt-2">
+            <a th:href="@{/}" class="text-link">Back</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>

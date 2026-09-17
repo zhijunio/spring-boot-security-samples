@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main}, true)}">
+<head>
+    <title>Enable Passkey - Demo MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Enable passkey</h2>
+        <p class="subtitle">
+            Register a passkey on this device. You will confirm with it after your password.
+        </p>
+        <div id="success" class="alert alert-success" style="display: none;">Passkey registered. You can return to your account.</div>
+        <div id="error" class="alert alert-error" style="display: none;"></div>
+        <div class="form-group">
+            <label for="label">Passkey label</label>
+            <input type="text" id="label" class="form-control" placeholder="MacBook" autocomplete="off"
+                   autocapitalize="none" spellcheck="false" required>
+        </div>
+        <button id="register" type="button" class="btn btn-primary">Register</button>
+        <p class="text-center mt-2">
+            <a th:href="@{/}" class="text-link">Back</a>
+        </p>
+    </div>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        (function () {
+            const headers = {};
+            headers["[(${csrfHeader})]"] = "[(${csrfToken})]";
+            const ui = {
+                getRegisterButton() {
+                    return document.getElementById("register");
+                },
+                getLabelInput() {
+                    return document.getElementById("label");
+                },
+                getSuccess() {
+                    return document.getElementById("success");
+                },
+                getError() {
+                    return document.getElementById("error");
+                },
+                getDeleteForms() {
+                    return [];
+                }
+            };
+            const bind = () => setupRegistration(headers, "", ui);
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", bind);
+            } else {
+                bind();
+            }
+        })();
+    </script>
+</main>
+</body>
+</html>

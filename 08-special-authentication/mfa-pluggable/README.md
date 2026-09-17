@@ -1,49 +1,53 @@
 # mfa-pluggable
 
-演示**可插拔**第二因素：平台运行中开关 provider，用户按需绑定，登录时在已启用且已绑定的方法里 **OR** 选一种完成。
+Spring Security 7 多因子认证演示：密码之后按已启用的主因子做 AND；Mnemonic 随时可启用，有主因子时作恢复，仅启用 Mnemonic 时登录必须校验。
 
-这与 `mfa-formLogin-totp` / `mfa-formLogin-backupCode` 等「整站写死 PASSWORD ∧ 某因素」的样例不同。本示例用 `@EnableMultiFactorAuthentication(authorities = {})` 打开 MFA 基础设施，再用自定义 `PluggableMfaAuthorizationManager`：无绑定则只要密码；有绑定则还要通用 `FACTOR_MFA`（任意 provider 验过即发）。
+## 因子
 
-第一期 provider：
-
-| id | 说明 |
+| 类型 | 说明 |
 | --- | --- |
-| `email` | 控制台打印 6 位码 |
-| `totp` | RFC 6238 |
-| `bip39` | 官方 English 词表 + 校验和，**可复用** 12 词 |
+| 密码 | 必选第一因子 |
+| TOTP | 认证器 App |
+| Email code | 6 位码，演示环境打到日志，不发邮件 |
+| Passkey | WebAuthn，自定义 `/enable-webauthn` |
+| Mnemonic | 12 词 BIP39；抄写勾选后，在打乱词库按序点选确认 |
 
-WebAuthn 不在第一期。
+登录后统一进入 `/challenge`，同一页展示所有待验证方式（含 Passkey）。主因子做 AND；Mnemonic 在本页即可恢复。
+
+## 环境
+
+- JDK 21
+- Docker（MySQL；测试还要用 Testcontainers / Playwright）
+- Maven Wrapper（`./mvnw`）
+
+## 运行
+
+```bash
+./mvnw spring-boot:run
+```
+
+`spring-boot-docker-compose` 会拉起 `compose.yaml` 里的 MySQL 8.4（库 `mfa` / 用户 `user`）。打开 [http://localhost:8080](http://localhost:8080)，注册后在 Welcome 页启用因子。
+
+WebAuthn 的 `rpId` 是 `localhost`。生产端口按 `8080` 配了 origin；测试随机端口会按请求 Origin 适配。
+
+也可用 Testcontainers 起库：
+
+```bash
+./mvnw -DskipTests spring-boot:test-run
+```
+
+（入口是 `TestSpringBootSecurityMfaApplication`。）
 
 ## 测试
 
-~~~bash
-mvn -f ./08-special-authentication/mfa-pluggable/pom.xml test
-~~~
+```bash
+./mvnw test
+```
 
-## 启动
+- `com.example.mfa.**`：因子单元测试（部分会起 MySQL 容器）
+- `DemoMfaE2ETest`：Playwright + 虚拟 authenticator；TOTP/Email 在测试配置里接受 `1234`
 
-~~~bash
-mvn -f ./08-special-authentication/mfa-pluggable/pom.xml spring-boot:run
-~~~
+## 说明
 
-访问 `http://localhost:8080`。密码均为 `password`。
-
-| 用户 | 预绑定 |
-| --- | --- |
-| `plain` | 无 MFA，密码后直达 |
-| `user` | TOTP（密钥 `JBSWY3DPEHPK3PXP`） |
-| `mailer` | Email（登录后验证码打印到控制台） |
-| `multi` | TOTP + BIP-39 |
-| `admin` | TOTP；可开 `/mfa/platform` |
-
-`multi` 的演示 BIP-39：
-
-`payment noodle vivid slogan gather metal pilot enact fragile hip physical canvas`
-
-## 插拔方式
-
-1. 实现 `MfaProvider` 并注册为 Spring bean。
-2. 管理员在 `/mfa/platform` 开关（热配置，不必改 Java）。
-3. 用户在 `/mfa/settings` 绑定/解绑。
-
-关闭某 provider 后，挑战页不再出现它。若用户只有被关的方法，挑战页显示 blocked，不能靠密码混过受保护页。
+- Schema 在 `src/main/resources/schema.sql`，`spring.sql.init.mode=always`。`CREATE TABLE IF NOT EXISTS` **不会**改已有表，改结构需要重建库（例如 `docker compose down -v`）。
+- 这是演示，不是生产模板：邮件码明文记日志；Passkey 仅适合本机 `localhost`。
