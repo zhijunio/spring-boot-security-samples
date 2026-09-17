@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
-class MfaFormLoginEmailApplicationTests {
+class MfaFormLoginEmailThymeleafApplicationTests {
 
     @Test
     void contextLoads() {

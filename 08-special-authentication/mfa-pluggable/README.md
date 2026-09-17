@@ -36,7 +36,7 @@ WebAuthn 的 `rpId` 是 `localhost`。生产端口按 `8080` 配了 origin；测
 ./mvnw -DskipTests spring-boot:test-run
 ```
 
-（入口是 `TestSpringBootSecurityMfaApplication`。）
+（入口是 `TestMfaPluggableApplication`。）
 
 ## 测试
 

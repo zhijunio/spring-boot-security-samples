@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(TestcontainersConfiguration.class)
-class MfaFormLoginEmailSecurityTests {
+class MfaFormLoginEmailThymeleafSecurityTests {
 
     @Autowired
     private MockMvc mockMvc;

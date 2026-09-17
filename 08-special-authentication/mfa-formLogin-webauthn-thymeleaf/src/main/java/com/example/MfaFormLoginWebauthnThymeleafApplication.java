@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MfaEmailApplication {
+public class MfaFormLoginWebauthnThymeleafApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MfaEmailApplication.class, args);
+        SpringApplication.run(MfaFormLoginWebauthnThymeleafApplication.class, args);
     }
 
 }
