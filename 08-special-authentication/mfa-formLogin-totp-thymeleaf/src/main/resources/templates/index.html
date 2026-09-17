@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Account - TOTP MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Account</h2>
+        <p class="subtitle">Signed in as <strong sec:authentication="name">user</strong>. Password then TOTP.</p>
+        <p class="hint">Authenticator is always on for this account. The shared secret is stored with the user in MySQL.</p>
+    </div>
+</main>
+</body>
+</html>

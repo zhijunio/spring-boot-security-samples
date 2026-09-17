@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Email code - Email MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Email code</h2>
+        <p class="subtitle">A 6-digit code is printed to the app log for
+            <code th:text="${email}">user@example.com</code>.</p>
+        <div th:if="${param.sent}" class="alert alert-success">A new code was sent to the log.</div>
+        <div th:if="${param.error}" class="alert alert-error">The code is invalid or expired.</div>
+        <form method="post" th:action="@{/email/request}">
+            <input name="username" th:value="${username}" type="hidden">
+            <button type="submit" class="btn btn-secondary">Send code</button>
+        </form>
+        <form class="mt-2" method="post" th:action="@{/email/verify}">
+            <input name="username" th:value="${username}" type="hidden">
+            <div class="form-group">
+                <label for="code">Verification code</label>
+                <input class="form-control" autofocus id="code" name="code" inputmode="numeric"
+                       pattern="[0-9]{6}" required type="text" autocomplete="one-time-code">
+            </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

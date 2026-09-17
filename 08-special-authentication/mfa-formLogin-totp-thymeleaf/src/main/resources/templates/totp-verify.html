@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Authenticator - TOTP MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Authenticator</h2>
+        <p class="subtitle">Enter the 6-digit code from your authenticator app.</p>
+        <div th:if="${param.error}" class="alert alert-error">The code is invalid.</div>
+        <p class="hint">Secret: <code th:text="${secret}">secret</code></p>
+        <p class="hint">URI: <code th:text="${otpAuthUri}">otpauth</code></p>
+        <form method="post" th:action="@{/totp/verify}">
+            <input name="username" th:value="${username}" type="hidden">
+            <div class="form-group">
+                <label for="code">TOTP code</label>
+                <input class="form-control" autofocus id="code" name="code" inputmode="numeric"
+                       pattern="[0-9]{6}" required type="text" autocomplete="one-time-code">
+            </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
