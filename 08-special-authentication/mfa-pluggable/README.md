@@ -44,8 +44,13 @@ WebAuthn 的 `rpId` 是 `localhost`。生产端口按 `8080` 配了 origin；测
 ./mvnw test
 ```
 
-- `com.example.mfa.**`：因子单元测试（部分会起 MySQL 容器）
-- `DemoMfaE2ETest`：Playwright + 虚拟 authenticator；TOTP/Email 在测试配置里接受 `1234`
+`com.example.mfa.**`：因子单元测试（部分会起 MySQL 容器）。Playwright E2E 默认不跑，避免本机/CI 下载浏览器超时：
+
+```bash
+./mvnw test -Pe2e
+```
+
+`DemoMfaE2ETest` 用 Playwright + 虚拟 authenticator；TOTP/Email 在测试配置里接受 `1234`。需要本机已装好 Playwright Chromium。
 
 ## 说明
 
