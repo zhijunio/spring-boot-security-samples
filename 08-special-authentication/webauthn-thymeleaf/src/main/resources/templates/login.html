@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Log in - WebAuthn</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Log in</h2>
+        <p class="subtitle">Password or a passkey. Register a passkey after the first password login.</p>
+        <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+        <div th:if="${param.error}" class="alert alert-error">Sign-in failed. Try again.</div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       autocomplete="username" autocapitalize="none" spellcheck="false"
+                       required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+        <p class="text-center mt-2">
+            <button id="passkey-signin" type="button" class="btn btn-secondary">Sign in with passkey</button>
+        </p>
+        <p class="hint">Demo: <code>user</code> / <code>password</code></p>
+    </div>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.getElementById("passkey-signin");
+            if (!button || typeof setupLogin !== "function") {
+                return;
+            }
+            const headers = {};
+            headers["[(${_csrf.headerName})]"] = "[(${_csrf.token})]";
+            setupLogin(headers, "", button);
+        });
+    </script>
+</main>
+</body>
+</html>
