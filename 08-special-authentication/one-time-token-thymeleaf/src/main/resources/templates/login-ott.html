@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Enter token - One-Time Token</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Enter token</h2>
+        <p class="subtitle">Paste the token from the magic link, or open the link from the log.</p>
+        <div th:if="${param.error}" class="alert alert-error">Invalid or expired token.</div>
+        <form th:action="@{/login/ott}" method="post">
+            <div class="form-group">
+                <label for="token">Token</label>
+                <input type="text" id="token" name="token" class="form-control"
+                       th:value="${param.token}" required autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </form>
+        <p class="text-center mt-2">
+            <a th:href="@{/login}" class="text-link">Back to log in</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>

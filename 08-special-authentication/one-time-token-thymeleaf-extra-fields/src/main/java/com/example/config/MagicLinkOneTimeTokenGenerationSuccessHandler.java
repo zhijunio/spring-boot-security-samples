@@ -1,7 +1,6 @@
 package com.example.config;
 
-import java.io.IOException;
-
+import com.example.user.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,11 +11,19 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
+
 @Component
 public class MagicLinkOneTimeTokenGenerationSuccessHandler implements OneTimeTokenGenerationSuccessHandler {
 
     private final OneTimeTokenGenerationSuccessHandler redirectHandler =
-            new RedirectOneTimeTokenGenerationSuccessHandler("/login/ott");
+            new RedirectOneTimeTokenGenerationSuccessHandler("/ott/sent");
+
+    private final UserService users;
+
+    public MagicLinkOneTimeTokenGenerationSuccessHandler(UserService users) {
+        this.users = users;
+    }
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, OneTimeToken oneTimeToken)
@@ -30,6 +37,7 @@ public class MagicLinkOneTimeTokenGenerationSuccessHandler implements OneTimeTok
                 .toUriString();
 
         IO.println("Username: " + oneTimeToken.getUsername());
+        IO.println("E-mail: " + this.users.email(oneTimeToken.getUsername()));
         IO.println("Magic Link: " + magicLink);
 
         this.redirectHandler.handle(request, response, oneTimeToken);

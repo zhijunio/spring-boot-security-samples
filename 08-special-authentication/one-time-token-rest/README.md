@@ -1,6 +1,8 @@
 # one-time-token-rest
 
-演示通过 REST API 请求 One-Time Token，并继续使用 Spring Security 的 OTT 登录过滤器消费令牌。项目不包含网页端 Magic Link 生成 Handler。
+在 `one-time-token` 之上，用 REST 发令牌：默认登录页和 `/login/ott` 提交页，用户与令牌存在内存里，没有数据库、没有自定义页面。
+
+和 `one-time-token` 的差别：令牌由 `POST /api/ott/generate` 返回 JSON，而不是打印 Magic Link。默认登录页上的「Send Token」只会得到 `204`，拿不到令牌。
 
 ## 运行
 
@@ -9,7 +11,7 @@ mvn -f ./08-special-authentication/one-time-token-rest/pom.xml test
 mvn -f ./08-special-authentication/one-time-token-rest/pom.xml spring-boot:run
 ```
 
-使用用户名和密码请求令牌。网页端不提供 Magic Link 生成流程，OTT 生成统一通过 REST 接口完成：
+演示账号 `user` / `password`。
 
 ```bash
 curl -X POST http://localhost:8080/api/ott/generate \
@@ -17,9 +19,8 @@ curl -X POST http://localhost:8080/api/ott/generate \
   -d '{"username":"user","password":"password"}'
 ```
 
-接口返回令牌、用户名和过期时间。返回的令牌可以提交到现有的 `/login/ott` OTT 登录流程中。
+把返回的 `token` 填进默认提交页 `http://localhost:8080/login/ott`，或 `POST /login/ott`。
 
-## 关键代码
+## 关键配置
 
-- `OneTimeTokenRestController`：完成 REST 请求、用户名密码认证和令牌生成。
-- `SecurityConfig`：允许 REST 生成接口，并启用 `oneTimeTokenLogin`。
+`InMemoryOneTimeTokenService` 同时给 REST 和 `oneTimeTokenLogin` 用。`/api/ott/generate` 忽略 CSRF，并先用 `AuthenticationManager` 校验用户名密码。

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Account - One-Time Token</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Account</h2>
+        <p class="subtitle">Signed in as <strong sec:authentication="name">user</strong>. Password or one-time token.</p>
+        <p class="hint">Users and tokens are stored in MySQL.</p>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Log in - One-Time Token</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <h2>Log in</h2>
+        <p class="subtitle">Password or a magic link. The token is printed to the application log.</p>
+        <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+        <div th:if="${param.error}" class="alert alert-error">Sign-in failed. Try again.</div>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       autocomplete="username" autocapitalize="none" spellcheck="false"
+                       required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+        <h3 class="section-title">One-Time Token</h3>
+        <form th:action="@{/ott/generate}" method="post">
+            <div class="form-group">
+                <label for="ott-username">Username</label>
+                <input type="text" id="ott-username" name="username" class="form-control"
+                       autocomplete="username" autocapitalize="none" spellcheck="false" required>
+            </div>
+            <button type="submit" class="btn btn-secondary">Send token</button>
+        </form>
+        <p class="text-center mt-2">
+            <a th:href="@{/login/ott}" class="text-link">Enter token</a>
+        </p>
+        <p class="hint">Demo: <code>user</code> / <code>password</code></p>
+    </div>
+</main>
+</body>
+</html>
