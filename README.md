@@ -82,21 +82,17 @@ Token 认证：
 
 特殊认证：
 
-- one-time-token
-- one-time-token-custom
-- one-time-token-extra-fields
-- one-time-token-jdbc
+- one-time-token、one-time-token-thymeleaf、one-time-token-thymeleaf-extra-fields
 - one-time-token-rest
-- mfa-formLogin-ott、mfa-formLogin-ott-authorization-manager
-- mfa-formLogin-webauthn
-- mfa-formLogin-email
-- mfa-formLogin-totp
-- mfa-formLogin-backupCode
+- mfa-formLogin-ott、mfa-formLogin-ott-thymeleaf
+- mfa-formLogin-webauthn、mfa-formLogin-webauthn-thymeleaf
+- mfa-formLogin-email-thymeleaf
+- mfa-formLogin-totp-thymeleaf
 - mfa-pluggable
 - mfa-formLogin-oauth2
 - mfa-formLogin-x509
 - mfa-webauthn-x509
-- webauthn
+- webauthn、webauthn-thymeleaf
 
 Reactive Security 示例暂不包含在当前项目中。
 
