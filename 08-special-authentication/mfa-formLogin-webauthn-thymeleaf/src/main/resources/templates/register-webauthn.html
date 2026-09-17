@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Passkeys - Passkey MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Passkeys</h2>
+        <p class="subtitle">One passkey per account. Delete it before registering another.</p>
+        <div id="success" class="alert alert-success" style="display: none;">Passkey saved. Use it to finish signing in.</div>
+        <div id="error" class="alert alert-error" style="display: none;"></div>
+        <th:block th:if="${canRegister}">
+            <div class="form-group">
+                <label for="label">Label</label>
+                <input type="text" id="label" class="form-control" placeholder="This laptop" autocomplete="off"
+                       autocapitalize="none" spellcheck="false" required autofocus>
+            </div>
+            <button id="register" type="button" class="btn btn-primary">Register</button>
+        </th:block>
+
+        <h3 class="section-title">On this account</h3>
+        <p class="empty" th:if="${passkeys.isEmpty()}">No passkeys yet.</p>
+        <ul class="settings-list" th:if="${!passkeys.isEmpty()}">
+            <li th:each="passkey : ${passkeys}">
+                <div class="settings-copy">
+                    <span class="settings-label" th:text="${passkey.label}">MacBook</span>
+                    <span class="settings-hint" th:text="${passkey.created}">2026-01-01 00:00 UTC</span>
+                </div>
+                <form class="delete-form settings-action" method="post"
+                      th:action="@{/webauthn/register/{id}(id=${passkey.credentialId})}">
+                    <input type="hidden" name="method" value="delete">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </li>
+        </ul>
+
+        <p class="text-center mt-2">
+            <a th:href="@{/}" class="text-link">Back</a>
+        </p>
+    </div>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        (function () {
+            const headers = {};
+            headers["[(${csrfHeader})]"] = "[(${csrfToken})]";
+            const ui = {
+                getRegisterButton() {
+                    return document.getElementById("register");
+                },
+                getLabelInput() {
+                    return document.getElementById("label");
+                },
+                getSuccess() {
+                    return document.getElementById("success");
+                },
+                getError() {
+                    return document.getElementById("error");
+                },
+                getDeleteForms() {
+                    return Array.from(document.getElementsByClassName("delete-form"));
+                }
+            };
+            const bind = () => {
+                if (ui.getRegisterButton()) {
+                    setupRegistration(headers, "", ui);
+                    return;
+                }
+                ui.getDeleteForms().forEach((form) => form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    try {
+                        await fetch(form.action, {
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json", ...headers }
+                        });
+                        window.location.href = "/webauthn/register?success";
+                    } catch (err) {
+                        const error = ui.getError();
+                        error.textContent = err.message;
+                        error.style.display = "";
+                    }
+                }));
+            };
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", bind);
+            } else {
+                bind();
+            }
+        })();
+    </script>
+</main>
+</body>
+</html>

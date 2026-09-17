@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Log in - Passkey MFA</title>
+</head>
+<body>
+<main>
+    <div class="card">
+        <th:block th:if="${param['factor.type'] != null && param['factor.type'][0] == 'webauthn'}">
+            <h2>Passkey</h2>
+            <p class="subtitle">Password is done. Confirm with a passkey on this device.</p>
+            <div th:if="${param.error}" class="alert alert-error">Passkey sign-in failed. Try again.</div>
+            <button id="passkey-signin" type="button" class="btn btn-primary">Continue with passkey</button>
+            <p class="text-center mt-2" th:if="${canRegister}">
+                <a th:href="@{/webauthn/register}" class="text-link">Register a passkey</a>
+            </p>
+        </th:block>
+        <th:block th:unless="${param['factor.type'] != null && param['factor.type'][0] == 'webauthn'}">
+            <h2>Log in</h2>
+            <p class="subtitle">Username and password first. A passkey is next.</p>
+            <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
+            <div th:if="${param.error}" class="alert alert-error">Invalid username or password.</div>
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control"
+                           autocomplete="username" autocapitalize="none" spellcheck="false"
+                           required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+            <p class="hint">Demo: <code>user</code> / <code>password</code></p>
+        </th:block>
+    </div>
+    <script type="text/javascript" th:src="@{/login/webauthn.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.getElementById("passkey-signin");
+            if (!button || typeof setupLogin !== "function") {
+                return;
+            }
+            const headers = {};
+            headers["[(${_csrf.headerName})]"] = "[(${_csrf.token})]";
+            setupLogin(headers, "", button);
+        });
+    </script>
+</main>
+</body>
+</html>

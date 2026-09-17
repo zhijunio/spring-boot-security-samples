@@ -1,7 +1,9 @@
 package com.example;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,34 +29,58 @@ class MfaFormLoginWebauthnSecurityTests {
     private MockMvc mockMvc;
 
     @Test
-    void publicHomeIsAccessible() throws Exception {
+    void anonymousHomeRedirectsToLogin() throws Exception {
         mockMvc.perform(get("/"))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test
-    void passwordOnlyCannotAccessUserPage() throws Exception {
-        mockMvc.perform(get("/user").with(authentication(token("user", "ROLE_USER",
-                        FactorGrantedAuthority.PASSWORD_AUTHORITY))))
+    void defaultLoginPageIsGenerated() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("name=\"username\"")));
+    }
+
+    @Test
+    void webauthnScriptIsAccessible() throws Exception {
+        mockMvc.perform(get("/login/webauthn.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("setupRegistration")));
+    }
+
+    @Test
+    void passwordOnlyCannotAccessHome() throws Exception {
+        mockMvc.perform(get("/").with(authentication(token(FactorGrantedAuthority.PASSWORD_AUTHORITY))))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?factor.type=webauthn&factor.reason=missing"));
     }
 
     @Test
-    void passwordAndWebAuthnAllowUserPage() throws Exception {
-        mockMvc.perform(get("/user").with(authentication(token("user", "ROLE_USER",
-                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
-                        FactorGrantedAuthority.WEBAUTHN_AUTHORITY))))
-                .andExpect(status().isOk());
+    void passwordOnlyCanOpenDefaultRegisterPage() throws Exception {
+        mockMvc.perform(get("/webauthn/register").with(authentication(token(
+                        FactorGrantedAuthority.PASSWORD_AUTHORITY))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("No Passkeys")));
     }
 
-    private static UsernamePasswordAuthenticationToken token(String username, String role, String... factors) {
+    @Test
+    void passwordAndWebAuthnAllowHome() throws Exception {
+        mockMvc.perform(get("/").with(authentication(token(
+                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
+                        FactorGrantedAuthority.WEBAUTHN_AUTHORITY))))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello, user"));
+    }
+
+    private static UsernamePasswordAuthenticationToken token(String... factors) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority("USER"));
         for (String factor : factors) {
             authorities.add(FactorGrantedAuthority.fromAuthority(factor));
         }
-        User principal = new User(username, "n/a", authorities);
+        User principal = new User("user", "n/a", authorities);
         return UsernamePasswordAuthenticationToken.authenticated(principal, "n/a", authorities);
     }
+
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Account - Passkey MFA</title>
+</head>
+<body>
+<main>
+    <div class="card wide">
+        <h2>Account</h2>
+        <p class="subtitle">Signed in as <strong sec:authentication="name">user</strong>. Password then passkey.</p>
+
+        <h3 class="section-title">Passkeys</h3>
+        <p class="empty" th:if="${passkeys.isEmpty()}">No passkeys yet.</p>
+        <ul class="settings-list" th:if="${!passkeys.isEmpty()}">
+            <li th:each="passkey : ${passkeys}">
+                <div class="settings-copy">
+                    <span class="settings-label" th:text="${passkey.label}">MacBook</span>
+                    <span class="settings-hint" th:text="${passkey.created}">2026-01-01 00:00 UTC</span>
+                </div>
+            </li>
+        </ul>
+        <p class="mt-2">
+            <a th:href="@{/webauthn/register}" class="btn btn-secondary"
+               th:text="${canRegister} ? 'Add passkey' : 'Manage passkey'">Add passkey</a>
+        </p>
+    </div>
+</main>
+</body>
+</html>
