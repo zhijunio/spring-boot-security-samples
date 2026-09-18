@@ -134,7 +134,7 @@ mvn -f 01-authentication/basic-login/pom.xml test \
   -Dmaven.compiler.release=25
 ```
 
-CI 会自动检查仓库中的各个 Maven 项目。依赖 MySQL 的样例在测试时改用内存 H2，不需要本机或 CI 先起数据库。
+CI 会自动检查仓库中的各个 Maven 项目。依赖 MySQL 的样例在测试时用 Testcontainers 起 MySQL，不需要本机先起数据库。
 
 ## 学习建议
 

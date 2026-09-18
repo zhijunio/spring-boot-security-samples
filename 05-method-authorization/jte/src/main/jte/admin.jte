@@ -1,4 +1,4 @@
-@import willydekeyser.config.CustomUser
+@import com.example.config.CustomUser
 
 @param CustomUser user
 
