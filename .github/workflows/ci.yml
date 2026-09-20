@@ -10,8 +10,20 @@ permissions:
 
 jobs:
   maven-test:
-    name: Maven tests
+    name: Maven tests (${{ matrix.section }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        section:
+          - 01-authentication
+          - 02-web-security
+          - 03-session-and-login-state
+          - 04-authentication-extension
+          - 05-method-authorization
+          - 06-error-handling
+          - 07-token-authentication
+          - 08-special-authentication
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -23,11 +35,5 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Test all Maven projects
-        shell: bash
-        run: |
-          set -euo pipefail
-          while IFS= read -r pom; do
-            echo "Testing ${pom}"
-            mvn --batch-mode --no-transfer-progress -f "${pom}" test
-          done < <(find . -type f -name pom.xml -not -path '*/target/*' | sort)
+      - name: Test Maven projects
+        run: bash scripts/test-projects.sh "${{ matrix.section }}"

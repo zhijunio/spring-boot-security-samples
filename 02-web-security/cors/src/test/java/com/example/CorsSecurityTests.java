@@ -20,4 +20,11 @@ class CorsSecurityTests {
     void allowedOriginCanPreflightApi() throws Exception {
         mvc.perform(options("/api/public").header("Origin", "http://localhost:3000").header("Access-Control-Request-Method", "GET")).andExpect(status().isOk()).andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:3000"));
     }
+
+    @Test
+    void unknownOriginCannotPreflightApi() throws Exception {
+        mvc.perform(options("/api/public").header("Origin", "http://localhost:4000").header("Access-Control-Request-Method", "GET"))
+                .andExpect(status().isForbidden())
+                .andExpect(header().doesNotExist("Access-Control-Allow-Origin"));
+    }
 }

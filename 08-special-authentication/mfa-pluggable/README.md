@@ -16,7 +16,7 @@ Spring Security 7 多因子认证演示：密码之后按已启用的主因子�
 
 ## 环境
 
-- JDK 21
+- JDK 25
 - Docker（MySQL；测试还要用 Testcontainers / Playwright）
 - Maven Wrapper（`./mvnw`）
 

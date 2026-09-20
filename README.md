@@ -102,7 +102,7 @@ Reactive Security 示例暂不包含在当前项目中。
 - Maven
 - Spring Boot 4.1.1
 
-部分示例使用 MySQL，需要提前启动对应的数据库服务。
+部分示例使用 Docker/Testcontainers 或 MySQL。进入具体示例目录前，先查看该项目的 README 和 `compose.yaml`。
 
 ## 运行示例
 
@@ -127,14 +127,21 @@ mvn -f 01-authentication/basic-login/pom.xml spring-boot:run
 mvn -f 01-authentication/basic-login/pom.xml test
 ```
 
-使用 Java 25 运行测试：
+批量测试一个主题：
 
 ```bash
-mvn -f 01-authentication/basic-login/pom.xml test \
-  -Dmaven.compiler.release=25
+bash scripts/test-projects.sh 01-authentication
 ```
 
-CI 会自动检查仓库中的各个 Maven 项目。依赖 MySQL 的样例在测试时用 Testcontainers 起 MySQL，不需要本机先起数据库。
+测试全部主题：
+
+```bash
+bash scripts/test-projects.sh .
+```
+
+CI 使用同一个脚本，并按主题并行检查各个 Maven 项目。依赖 MySQL 的样例在测试时用 Testcontainers 起 MySQL，不需要本机先起数据库；运行这些测试仍需要 Docker。
+
+所有示例的 POM、CI 和本地工具约定使用 Java 25。若本机安装了 mise，可执行 `mise install`。
 
 ## 学习建议
 
