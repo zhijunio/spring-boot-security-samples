@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "description": [
+    "Renovate 配置：由 GitHub App 直接读取本文件，不再自带调度工作流。"
+  ],
+  "labels": ["dependencies"],
+  "schedule": ["before 9am on monday"],
+  "timezone": "Asia/Shanghai",
+  "forkProcessing": "disabled",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "rebaseWhen": "behind-base-branch",
+  "automerge": true,
+  "automergeType": "branch",
+  "packageRules": [
+    {
+      "description": "major 升级只开 PR，不自动合并（大版本会换 runtime 与行为）",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "patch、minor 与 pin 合并为一个 PR，检查通过后自动合并",
+      "matchUpdateTypes": ["patch", "minor", "pin"],
+      "groupName": "actions 非 major 升级",
+      "automerge": true
+    }
+  ]
+}
